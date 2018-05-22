@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 using Microsoft.WindowsAzure.MobileServices;
 using SmartBasket;
 using ZXing.Mobile;
+using Android.Content;
 
 #if OFFLINE_SYNC_ENABLED
 using Microsoft.WindowsAzure.MobileServices.Sync;
@@ -52,6 +53,7 @@ namespace ArduinoSmartBasket
         const string applicationURL = @"https://smartbasket.azurewebsites.net";
 
         Button buttonDoScan;
+        Button buttonBluetooth;
         MobileBarcodeScanner scanner;
 
         protected override async void OnCreate(Bundle bundle)
@@ -94,6 +96,18 @@ namespace ArduinoSmartBasket
                 var result = await scanner.Scan();
                 DisplayResult(result);
             };
+
+            buttonBluetooth = this.FindViewById<Button>(SmartBasket.Resource.Id.bluetooth);
+            buttonBluetooth.Click += async delegate
+            {
+                scanner.UseCustomOverlay = false;
+                scanner.TopText = "moving to new activity";
+                var m_activity =  new Intent(this, typeof(BluetoothA));
+                this.StartActivity(m_activity);
+            };
+
+
+           
 
         }
         void DisplayResult(ZXing.Result result)

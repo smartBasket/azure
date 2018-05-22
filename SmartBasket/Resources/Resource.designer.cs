@@ -66,23 +66,32 @@ namespace SmartBasket
 			// aapt resource value: 0x7f070000
 			public const int LinearLayout1 = 2131165184;
 			
+			// aapt resource value: 0x7f070006
+			public const int bluetooth = 2131165190;
+			
 			// aapt resource value: 0x7f070003
 			public const int buttonAddToDo = 2131165187;
 			
-			// aapt resource value: 0x7f070006
-			public const int checkToDoItem = 2131165190;
+			// aapt resource value: 0x7f070009
+			public const int checkToDoItem = 2131165193;
 			
-			// aapt resource value: 0x7f070007
-			public const int contentFrame = 2131165191;
+			// aapt resource value: 0x7f07000a
+			public const int contentFrame = 2131165194;
 			
 			// aapt resource value: 0x7f070004
 			public const int listViewToDo = 2131165188;
 			
-			// aapt resource value: 0x7f070008
-			public const int menu_refresh = 2131165192;
+			// aapt resource value: 0x7f07000b
+			public const int menu_refresh = 2131165195;
+			
+			// aapt resource value: 0x7f070007
+			public const int num = 2131165191;
 			
 			// aapt resource value: 0x7f070005
 			public const int scanner = 2131165189;
+			
+			// aapt resource value: 0x7f070008
+			public const int send = 2131165192;
 			
 			// aapt resource value: 0x7f070002
 			public const int textNewToDo = 2131165186;
@@ -107,13 +116,16 @@ namespace SmartBasket
 			public const int Activity_To_Do = 2130903040;
 			
 			// aapt resource value: 0x7f030001
-			public const int Row_List_To_Do = 2130903041;
+			public const int BluetoothA = 2130903041;
 			
 			// aapt resource value: 0x7f030002
-			public const int zxingscanneractivitylayout = 2130903042;
+			public const int Row_List_To_Do = 2130903042;
 			
 			// aapt resource value: 0x7f030003
-			public const int zxingscannerfragmentlayout = 2130903043;
+			public const int zxingscanneractivitylayout = 2130903043;
+			
+			// aapt resource value: 0x7f030004
+			public const int zxingscannerfragmentlayout = 2130903044;
 			
 			static Layout()
 			{

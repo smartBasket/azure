@@ -51,4 +51,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scanner" />
+    <Button
+        android:text="bluetooth"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bluetooth" />
 </LinearLayout>
