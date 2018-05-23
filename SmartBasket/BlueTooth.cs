@@ -107,13 +107,13 @@ namespace SmartBasket
 
             if (_socket.IsConnected)
             {
-                App.but.Text = "connected";
+            //    App.but.Text = "connected";
 
 
                 byte[] bytes_c = System.Text.Encoding.ASCII.GetBytes(App.send_to_ard);
                 await BlueTooth.WriteeAsync(_socket, bytes_c);
 
-                App.but.Text = "sent";
+             //   App.but.Text = "sent";
                 return;
 
 

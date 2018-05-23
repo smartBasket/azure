@@ -20,7 +20,7 @@ namespace SmartBasket
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            App.blue1 = BlueTooth.Pair(BlueTooth.Blut(), "Mi Phone");
+            App.blue1 = BlueTooth.Pair(BlueTooth.Blut(), "SmartStove");
             App.socket1 = App.blue1.CreateRfcommSocketToServiceRecord(UUID.FromString("00001101-0000-1000-8000-00805f9b34fb"));
             // Create your application here
             Asynch();
@@ -34,6 +34,8 @@ namespace SmartBasket
                 Toast.MakeText(this, App.send_to_ard, ToastLength.Short).Show();
                 
                 BlueTooth.Send_to_arduino(null, null);
+                Toast.MakeText(this, "sent", ToastLength.Short).Show();
+
             };
 
         }
