@@ -26,9 +26,12 @@ using Microsoft.WindowsAzure.MobileServices.SQLiteStore;
 
 namespace ArduinoSmartBasket
 {
-    [Activity(MainLauncher = true,
+    /* MainLauncher = true was removed by salma 
+     *        (MainLauncher = true,
                Icon = "@drawable/ic_launcher", Label = "@string/app_name",
-               Theme = "@style/AppTheme")]
+               Theme = "@style/AppTheme")
+    */
+    [Activity(Label = "ToDoActivity")]
     public class ToDoActivity : Activity
     {
 
@@ -61,10 +64,13 @@ namespace ArduinoSmartBasket
             base.OnCreate(bundle);
             scanner = new MobileBarcodeScanner(this);
 
-
+            //removed 
             // Set our view from the "main" layout resource
+            // SetContentView(SmartBasket.Resource.Layout.Activity_To_Do);
+            // CurrentPlatform.Init();
+            //edit
             SetContentView(SmartBasket.Resource.Layout.Activity_To_Do);
-            CurrentPlatform.Init();
+            //done 
 
             // Create the client instance, using the mobile app backend URL.
             client = new MobileServiceClient(applicationURL);
