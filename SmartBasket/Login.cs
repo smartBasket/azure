@@ -43,66 +43,80 @@ namespace SmartBasket
         // URL of the mobile app backend.
         
         const string applicationURL = @"https://smartbasketarduino.azurewebsites.net";
-
+        
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(SmartBasket.Resource.Layout.Login);
             // Create the client instance, using the mobile app backend URL.
-            client = new MobileServiceClient(applicationURL);
-#if OFFLINE_SYNC_ENABLED
-            await InitLocalStoreAsync();
+               client = new MobileServiceClient(applicationURL);
+   #if OFFLINE_SYNC_ENABLED
+               await InitLocalStoreAsync();
 
-            // Get the sync table instance to use to store TodoItem rows.
-            todoTable = client.GetSyncTable<ToDoItem>();
-#else
-           
-            userTable = client.GetTable<User>();
-#endif
-            CurrentPlatform.Init();
-            EditText input = this.FindViewById<EditText>(SmartBasket.Resource.Id.input_id);
-            Button sendButton = this.FindViewById<Button>(SmartBasket.Resource.Id.btn_login);
-            sendButton.Click += async delegate
-            {
-                Toast.MakeText(this, "Login Succeeded", ToastLength.Short).Show();
-                var m_activity = new Intent(this, typeof(ToDoActivity));
-                this.StartActivity(m_activity);
+               // Get the sync table instance to use to store TodoItem rows.
+               todoTable = client.GetSyncTable<ToDoItem>();
+   #else
 
-                // Toast.MakeText(this, input.Text.ToString(), ToastLength.Short).Show();
+               userTable = client.GetTable<User>();
+   #endif
+               CurrentPlatform.Init();
+               EditText input = this.FindViewById<EditText>(SmartBasket.Resource.Id.input_id);
+               Button sendButton = this.FindViewById<Button>(SmartBasket.Resource.Id.btn_login);
+               sendButton.Click += async delegate
+               {
+                   Toast.MakeText(this, "Login Succeeded", ToastLength.Short).Show();
+                   var m_activity = new Intent(this, typeof(ToDoActivity));
+                   this.StartActivity(m_activity);
 
-        };
-        }
-        [Java.Interop.Export()]
-        public async void AddUsr(View view)
-        {
-            if (client == null )
-            {
-                //    return;
-            }
+                   // Toast.MakeText(this, input.Text.ToString(), ToastLength.Short).Show();
+                   var usr = new User();
+                   usr.userId = "123";
+                   usr.password = "123";
+                   try
+                   {
+                       // Insert the new item into the local store.
+                       await userTable.InsertAsync(usr);
+
+                   }
+                   catch (Exception e)
+                   {
+                       //CreateAndShowDialog(e, "Error");
+                   }
+
+               };
+           }
+           [Java.Interop.Export()]
+           public async void AddUsr(View view)
+           {
+               if (client == null )
+               {
+                   //    return;
+               }
 
 
-            // Create a new item
-            var usr = new User();
-            usr.userId = "123";
-            usr.password = "123";
-            try
-            {
-                // Insert the new item into the local store.
-                await userTable.InsertAsync(usr);
-#if OFFLINE_SYNC_ENABLED
-                // Send changes to the mobile app backend.
-				await SyncAsync();
-#endif
+               // Create a new item
+               var usr = new User();
+               usr.userId = "123";
+               usr.password = "123";
+               try
+               {
+                   // Insert the new item into the local store.
+                   await userTable.InsertAsync(usr);
+   #if OFFLINE_SYNC_ENABLED
+                   // Send changes to the mobile app backend.
+                   await SyncAsync();
+   #endif
 
 
-            }
-            catch (Exception e)
-            {
-                //CreateAndShowDialog(e, "Error");
-            }
+               }
+               catch (Exception e)
+               {
+                   //CreateAndShowDialog(e, "Error");
+               }
 
-            //textNewToDo.Text = "";
-        }
+               //textNewToDo.Text = "";
+           }
+        
     }
 }
