@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Threading;
 using Android.App;
 using Android.Bluetooth;
 using Android.Content;
@@ -26,16 +26,36 @@ namespace SmartBasket
             Asynch();
 
             SetContentView(SmartBasket.Resource.Layout.BluetoothA);
-            EditText num= this.FindViewById<EditText>(SmartBasket.Resource.Id.num);
-            Button sendButton = this.FindViewById<Button>(SmartBasket.Resource.Id.send);
+            string num = "";
+
+            void A()
+            {
+                Thread.Sleep(5000);
+                num = "2";
+                App.send_to_ard = num;
+                //Toast.MakeText(this, App.send_to_ard, ToastLength.Short).Show();
+                BlueTooth.Send_to_arduino(null, null);
+                //Toast.MakeText(this, "open", ToastLength.Short).Show();
+
+                Console.WriteLine('A');
+            }
+            Thread thread1 = new Thread(new ThreadStart(A));
+            thread1.Start();
+       
+            //EditText num= this.FindViewById<EditText>(SmartBasket.Resource.Id.num);
+            Button sendButton = this.FindViewById<Button>(SmartBasket.Resource.Id.close);
             sendButton.Click += async delegate
             {
-                App.send_to_ard = num.Text.ToString();
+               
+                       
+                    num = "9";
+                
+                // App.send_to_ard = num.Text.ToString();
+                App.send_to_ard = num;
                 Toast.MakeText(this, App.send_to_ard, ToastLength.Short).Show();
                 
                 BlueTooth.Send_to_arduino(null, null);
-                Toast.MakeText(this, "sent", ToastLength.Short).Show();
-
+                Toast.MakeText(this, "close", ToastLength.Short).Show();
             };
 
         }

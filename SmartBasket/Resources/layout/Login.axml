@@ -19,6 +19,7 @@
         android:text="Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:onClick="AddUsr"
         android:id="@+id/btn_login" />
     <TextView
         android:id="@+id/link_signup"

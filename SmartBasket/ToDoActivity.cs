@@ -44,6 +44,7 @@ namespace ArduinoSmartBasket
         const string localDbFilename = "localstore.db";
 #else
         private IMobileServiceTable<ToDoItem> todoTable;
+       // private IMobileServiceTable<User> userTable;
 #endif
 
         // Adapter to map the items list to the view
@@ -53,8 +54,8 @@ namespace ArduinoSmartBasket
         private EditText textNewToDo;
 
         // URL of the mobile app backend.
-        const string applicationURL = @"https://smartbasket.azurewebsites.net";
-
+       
+        const string applicationURL = @"https://smartbasketarduino.azurewebsites.net";
         Button buttonDoScan;
         Button buttonBluetooth;
         MobileBarcodeScanner scanner;
@@ -81,6 +82,7 @@ namespace ArduinoSmartBasket
             todoTable = client.GetSyncTable<ToDoItem>();
 #else
             todoTable = client.GetTable<ToDoItem>();
+           // userTable = client.GetTable<User>();
 #endif
 
             textNewToDo = FindViewById<EditText>(SmartBasket.Resource.Id.textNewToDo);
@@ -93,7 +95,7 @@ namespace ArduinoSmartBasket
             // Load the items from the mobile app backend.
             OnRefreshItemsSelected();
 
-
+    /*
             buttonDoScan = this.FindViewById<Button>(SmartBasket.Resource.Id.scanner);
             buttonDoScan.Click += async delegate
             {
@@ -102,6 +104,7 @@ namespace ArduinoSmartBasket
                 var result = await scanner.Scan();
                 DisplayResult(result);
             };
+            */
 
             buttonBluetooth = this.FindViewById<Button>(SmartBasket.Resource.Id.bluetooth);
             buttonBluetooth.Click += async delegate
@@ -109,6 +112,9 @@ namespace ArduinoSmartBasket
                 scanner.UseCustomOverlay = false;
                 scanner.TopText = "moving to new activity";
                 var m_activity =  new Intent(this, typeof(BluetoothA));
+
+
+
                 this.StartActivity(m_activity);
             };
 
@@ -243,9 +249,14 @@ namespace ArduinoSmartBasket
         {
             if (client == null || string.IsNullOrWhiteSpace(textNewToDo.Text))
             {
-                return;
+            //    return;
             }
-
+            
+            scanner.UseCustomOverlay = false;
+            scanner.TopText = "Scanning for barcode";
+            var result = await scanner.Scan();
+            textNewToDo.Text = result.Text;
+            
             // Create a new item
             var item = new ToDoItem
             {
@@ -256,7 +267,7 @@ namespace ArduinoSmartBasket
             try
             {
                 // Insert the new item into the local store.
-                await todoTable.InsertAsync(item);
+              //  await todoTable.InsertAsync(item);
 #if OFFLINE_SYNC_ENABLED
                 // Send changes to the mobile app backend.
 				await SyncAsync();

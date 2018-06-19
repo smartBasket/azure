@@ -5,25 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+    <Button
+        android:text="FINISH"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bluetooth" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#71BCFA"
-        android:padding="6dip">
-        <TextView
-            android:id="@+id/textViewTitle"
-            android:layout_width="0dip"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2dp"
-            android:layout_weight="0.12"
-            android:text="@string/mobile_services"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#71BCFA"
-        android:padding="6dip">
+        android:padding="6dip"
+        android:id="@+id/linearLayout1">
         <EditText
             android:id="@+id/textNewToDo"
             android:layout_width="0dip"
@@ -31,13 +23,14 @@
             android:layout_weight="1"
             android:ems="10"
             android:hint="@string/add_textbox_hint">
-            <requestFocus />
+            <requestFocus
+                android:id="@+id/requestFocus1" />
         </EditText>
         <Button
             android:id="@+id/buttonAddToDo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="AddItem"
+            android:onClick="addadddaddAddItem"
             android:text="@string/add_button_text" />
     </LinearLayout>
     <ListView
@@ -46,14 +39,4 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/row_list_to_do"
         android:padding="6dip" />
-    <Button
-        android:text="Scan"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scanner" />
-    <Button
-        android:text="bluetooth"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/bluetooth" />
 </LinearLayout>
