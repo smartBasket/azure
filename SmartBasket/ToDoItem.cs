@@ -10,7 +10,10 @@ namespace SmartBasket
 		[JsonProperty(PropertyName = "text")]
 		public string Text { get; set; }
 
-		[JsonProperty(PropertyName = "complete")]
+        [JsonProperty(PropertyName = "price")]
+        public int price { get; set; }
+
+        [JsonProperty(PropertyName = "complete")]
 		public bool Complete { get; set; }
 	}
 

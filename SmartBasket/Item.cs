@@ -15,7 +15,7 @@ namespace SmartBasket
         [JsonProperty(PropertyName = "name")]
         public string name { get; set; }
         [JsonProperty(PropertyName = "price")]
-        public string price { get; set; }
+        public int price { get; set; }
 
 
     }

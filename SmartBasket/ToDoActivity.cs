@@ -37,6 +37,7 @@ namespace ArduinoSmartBasket
 
         // Client reference.
         private MobileServiceClient client;
+        public static int sum = 0;
 
 #if OFFLINE_SYNC_ENABLED
         private IMobileServiceSyncTable<ToDoItem> todoTable;
@@ -44,6 +45,7 @@ namespace ArduinoSmartBasket
         const string localDbFilename = "localstore.db";
 #else
         private IMobileServiceTable<ToDoItem> todoTable;
+        private IMobileServiceTable<Item> itemTable;
        // private IMobileServiceTable<User> userTable;
 #endif
 
@@ -82,9 +84,10 @@ namespace ArduinoSmartBasket
             todoTable = client.GetSyncTable<ToDoItem>();
 #else
             todoTable = client.GetTable<ToDoItem>();
-           // userTable = client.GetTable<User>();
+            itemTable = client.GetTable<Item>();
 #endif
-
+            TextView sumView = FindViewById<TextView>(SmartBasket.Resource.Id.sum);
+            sumView.Text = "Total: " + sum;
             textNewToDo = FindViewById<EditText>(SmartBasket.Resource.Id.textNewToDo);
 
             // Create an adapter to bind the items with the view
@@ -223,12 +226,15 @@ namespace ArduinoSmartBasket
                 return;
             }
 
+            TextView sumView = FindViewById<TextView>(SmartBasket.Resource.Id.sum);
+            sumView.Text = "Total: " + sum;
+
             // Set the item as completed and update it in the table
             item.Complete = true;
             try
             {
                 // Update the new item in the local store.
-                await todoTable.UpdateAsync(item);
+                //await todoTable.UpdateAsync(item);
 #if OFFLINE_SYNC_ENABLED
                 // Send changes to the mobile app backend.
 				await SyncAsync();
@@ -256,14 +262,36 @@ namespace ArduinoSmartBasket
             scanner.TopText = "Scanning for barcode";
             var result = await scanner.Scan();
             textNewToDo.Text = result.Text;
-            
-            // Create a new item
-            var item = new ToDoItem
+           System.Collections.Generic.List<Item> list=null;
+
+           
+
+            try
             {
-                Text = textNewToDo.Text,
+               
+                list = await itemTable.Where(it => (it.itemId) == (result.Text)).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                CreateAndShowDialog(e, "Error");
+            }
+
+            Item item2 = null;
+            foreach (Item current in list)
+            {
+                item2 = current;
+               
+            }
+            // Create a new item
+            var itemmm = new ToDoItem
+            {
+                Text = item2.name + " " + item2.price + "NIS",
+                price=item2.price,
                 Complete = false
             };
-
+            sum += item2.price;
+            TextView sumView = FindViewById<TextView>(SmartBasket.Resource.Id.sum);
+            sumView.Text = "Total: " + sum;
             try
             {
                 // Insert the new item into the local store.
@@ -273,9 +301,9 @@ namespace ArduinoSmartBasket
 				await SyncAsync();
 #endif
 
-                if (!item.Complete)
+                if (!itemmm.Complete)
                 {
-                    adapter.Add(item);
+                    adapter.Add(itemmm);
                 }
             }
             catch (Exception e)

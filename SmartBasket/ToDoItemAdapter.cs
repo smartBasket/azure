@@ -36,7 +36,9 @@ namespace SmartBasket
 					var cbSender = sender as CheckBox;
 					if (cbSender != null && cbSender.Tag is ToDoItemWrapper && cbSender.Checked) {
 						cbSender.Enabled = false;
-						if (activity is ToDoActivity)
+                        ToDoActivity.sum -= (cbSender.Tag as ToDoItemWrapper).ToDoItem.price;
+                       
+                        if (activity is ToDoActivity)
 							await ((ToDoActivity)activity).CheckItem ((cbSender.Tag as ToDoItemWrapper).ToDoItem);
 					}
 				};

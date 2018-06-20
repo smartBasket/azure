@@ -51,32 +51,58 @@ namespace SmartBasket
             SetContentView(SmartBasket.Resource.Layout.Login);
             // Create the client instance, using the mobile app backend URL.
                client = new MobileServiceClient(applicationURL);
-   #if OFFLINE_SYNC_ENABLED
+
+
+#if OFFLINE_SYNC_ENABLED
                await InitLocalStoreAsync();
 
                // Get the sync table instance to use to store TodoItem rows.
                todoTable = client.GetSyncTable<ToDoItem>();
-   #else
+#else
 
-               userTable = client.GetTable<User>();
+            userTable = client.GetTable<User>();
    #endif
                CurrentPlatform.Init();
                EditText input = this.FindViewById<EditText>(SmartBasket.Resource.Id.input_id);
+               EditText pass = this.FindViewById<EditText>(SmartBasket.Resource.Id.input_password);
                Button sendButton = this.FindViewById<Button>(SmartBasket.Resource.Id.btn_login);
-               sendButton.Click += async delegate
+               var m_activity=new Intent(this, typeof(ToDoActivity));
+            sendButton.Click += async delegate
                {
-                   Toast.MakeText(this, "Login Succeeded", ToastLength.Short).Show();
-                   var m_activity = new Intent(this, typeof(ToDoActivity));
-                   this.StartActivity(m_activity);
+                   var list = await userTable.Where(user => user.userId == (input.Text)).ToListAsync();
+
+                   int i = 0;
+                   foreach (User current in list)
+                   {
+                       if (current.password.Equals(pass.Text))
+                       {
+                           Toast.MakeText(this, "Login Succeeded", ToastLength.Short).Show();
+                           m_activity = new Intent(this, typeof(ToDoActivity));
+                           this.StartActivity(m_activity);
+                       }
+                       else
+                       {
+                           Toast.MakeText(this, "Login Failed", ToastLength.Short).Show();
+
+                       }
+                       i++;
+                   }
+                   if (i == 0)
+                   {
+                       Toast.MakeText(this, "Login Failed", ToastLength.Short).Show();
+                   }
 
                    // Toast.MakeText(this, input.Text.ToString(), ToastLength.Short).Show();
-                   var usr = new User();
-                   usr.userId = "123";
-                   usr.password = "123";
+                   /*
+                   var usr1 = new User();
+                   usr1.userId = "1234";
+                   usr1.password = "1234";
+                   */
                    try
                    {
                        // Insert the new item into the local store.
-                       await userTable.InsertAsync(usr);
+                       //await userTable.InsertAsync(usr1);
+ 
 
                    }
                    catch (Exception e)
@@ -86,37 +112,6 @@ namespace SmartBasket
 
                };
            }
-           [Java.Interop.Export()]
-           public async void AddUsr(View view)
-           {
-               if (client == null )
-               {
-                   //    return;
-               }
-
-
-               // Create a new item
-               var usr = new User();
-               usr.userId = "123";
-               usr.password = "123";
-               try
-               {
-                   // Insert the new item into the local store.
-                   await userTable.InsertAsync(usr);
-   #if OFFLINE_SYNC_ENABLED
-                   // Send changes to the mobile app backend.
-                   await SyncAsync();
-   #endif
-
-
-               }
-               catch (Exception e)
-               {
-                   //CreateAndShowDialog(e, "Error");
-               }
-
-               //textNewToDo.Text = "";
-           }
-        
+                  
     }
 }
